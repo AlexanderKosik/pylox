@@ -1,8 +1,15 @@
 from loxtoken import LoxToken
 
 class Scanner:
-    def __init__(self, source_file):
-        self.source_file = source_file
+    @staticmethod
+    def from_file(file_name):
+        with open(file_name) as f:
+            content = f.read()
+            return Scanner(content)
+        return None
+
+    def __init__(self, content):
+        self.content = content
         self.single_char_tokens = {
             # character: token_type
             '(': 'LEFT_PAREN',
@@ -27,64 +34,66 @@ class Scanner:
             '>=': 'GREATER_EQUAL',
         }
         self.keywords = {
-                "AND",
-                "CLASS",
-                "ELSE",
-                "FALSE",
-                "FUN",
-                "FOR",
-                "IF",
-                "NIL",
-                "OR",
-                "PRINT",
-                "RETURN",
-                "SUPER",
-                "THIS",
-                "TRUE",
-                "VAR",
-                "WHILE",
+                'AND',
+                'CLASS',
+                'ELSE',
+                'FALSE',
+                'FUN',
+                'FOR',
+                'IF',
+                'NIL',
+                'OR',
+                'PRINT',
+                'RETURN',
+                'SUPER',
+                'THIS',
+                'TRUE',
+                'VAR',
+                'WHILE',
 
-                "EOF",
+                'EOF',
         }
 
     def scan_tokens(self):
-        """
+        '''
         Scans the passed file for and returns tokens
-        """
+        '''
         tokens = []
-        with open(self.source_file) as f:
-            file_content = f.read()
-            line = 1
-            start = 0
-            current = 0
-            file_content_length = len(file_content)
-            it = iter(file_content)
-            for n, char in enumerate(it):
-                if file_content[n:n+2] == '//':
-                    # handle comments
-                    char = next(it)
-                    while char != '\n':
+        line = 1
+        start = 0
+        current = 0
+        file_content_length = len(self.content)
+        it = iter(self.content)
+        for n, char in enumerate(it):
+            if self.content[n:n+2] == '//':
+                # handle comments
+                while char != '\n':
+                    try:
                         char = next(it)
-                    line += 1
-                    continue
-                elif char == "\n":
-                    line += 1
-                    continue
-                elif char == " ":
-                    continue
-                elif char in self.single_char_tokens:
-                    ttype = self.single_char_tokens[char]
-                    lexeme = char
-                    tokens.append(LoxToken(ttype, lexeme, "", line))
-                    continue
-                elif file_content[n:n+2] in self.two_char_tokens:
-                    ttype = self.single_char_tokens[char]
-                    lexeme = char
-                    tokens.append(LoxToken(ttype, lexeme, "", line))
-                    continue
-                else:
-                    tokens.append(f"Unknown {char}")
-                    
+                    except StopIteration as e:
+                        # we have reached EOF
+                        break
+                line += 1
+                continue
+            elif char == '\n':
+                line += 1
+                continue
+            elif char == ' ':
+                continue
+            elif char in self.single_char_tokens:
+                token_type = self.single_char_tokens[char]
+                lexeme = char
+                tokens.append(LoxToken(token_type, lexeme, '', line))
+                continue
+            elif self.content[n:n+2] in self.two_char_tokens:
+                lexeme = self.content[n:n+2]
+                token_type = self.two_char_tokens[lexeme]
+                tokens.append(LoxToken(token_type, lexeme, '', line))
+                continue
+            else:
+                tokens.append(f'Unknown {char}')
 
+        tokens.append(LoxToken('EOF', '', '', line))
+                
 
         return tokens

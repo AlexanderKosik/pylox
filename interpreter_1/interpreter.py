@@ -14,7 +14,7 @@ def run_interactive_mode():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         file = sys.argv[1]
-        scanner = Scanner(file)
+        scanner = Scanner.from_file(file)
         tokens = scanner.scan_tokens()
         print(tokens)
     else:
