@@ -82,6 +82,24 @@ class Scanner:
                 n += 1
                 continue
 
+            if self.content[n] == '"':
+                start = n
+                n += 1
+                try:
+                    while self.content[n] != '"':
+                        n += 1
+                except IndexError as e:
+                    # we have reached EOF
+                    print('Error. Unterminated string.')
+                    break
+                value = self.content[start+1:n]
+                token_type = 'STRING'
+                tokens.append(LoxToken(token_type, value, '', line))
+                n += 1
+                line += 1
+                continue
+
+
             if self.content[n:n+2] in self.two_char_tokens:
                 lexeme = self.content[n:n+2]
                 token_type = self.two_char_tokens[lexeme]
