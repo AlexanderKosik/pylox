@@ -96,8 +96,10 @@ class Scanner:
                 tokens.append(LoxToken(token_type, lexeme, '', line))
                 n += 1
                 continue
-            else:
-                tokens.append(f'Unknown {self.content[n]}')
+
+            print(f'Unknown lexeme {self.content[n]}')
+            n += 1
+
 
         tokens.append(LoxToken('EOF', '', '', line))
                 

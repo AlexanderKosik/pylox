@@ -40,8 +40,15 @@ class ScannerTest(unittest.TestCase):
         file_content = '<= >= =='
         scanner = Scanner(file_content)
         tokens = scanner.scan_tokens()
-        print(tokens)
         self.assertEqual(len(tokens), 4) # <<< 3 operators and eof
+
+    def test_invalid_token(self):
+        file_content = '@' # <<< invalid token
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        print(tokens)
+        self.assertEqual(len(tokens), 1)
+
 
 if __name__ == '__main__':
     unittest.main()
