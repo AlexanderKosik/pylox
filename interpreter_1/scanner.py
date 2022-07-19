@@ -82,6 +82,24 @@ class Scanner:
                 n += 1
                 continue
 
+            # scanning numbers
+            if self.content[n].isdigit():
+                start = n
+                try:
+                    while self.content[n] != '"':
+                        n += 1
+                except IndexError as e:
+                    # we have reached EOF
+                    pass
+
+                value = self.content[start:n]
+                token_type = 'NUMBER'
+                tokens.append(LoxToken(token_type, value, '', line))
+                n += 1
+                line += 1
+                continue
+
+            # scanning strings
             if self.content[n] == '"':
                 start = n
                 n += 1

@@ -55,6 +55,18 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(tokens[0].type, 'STRING')
         self.assertEqual(len(tokens), 2)
 
+    def test_invalid_string(self):
+        file_content = '"Hello'
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        self.assertEqual(len(tokens), 1)
+
+    def test_number(self):
+        file_content = '42'
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        self.assertEqual(tokens[0].type, 'NUMBER')
+        self.assertEqual(len(tokens), 2)
 
 if __name__ == '__main__':
     unittest.main()
