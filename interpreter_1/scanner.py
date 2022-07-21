@@ -35,24 +35,24 @@ class Scanner:
             '>=': 'GREATER_EQUAL',
         }
         self.keywords = {
-                'AND',
-                'CLASS',
-                'ELSE',
-                'FALSE',
-                'FUN',
-                'FOR',
-                'IF',
-                'NIL',
-                'OR',
-                'PRINT',
-                'RETURN',
-                'SUPER',
-                'THIS',
-                'TRUE',
-                'VAR',
-                'WHILE',
+                'and': 'AND',
+                'class': 'CLASS',
+                'else': 'ELSE',
+                'false': 'FALSE',
+                'fun': 'FUN',
+                'for': 'FOR',
+                'if': 'IF',
+                'nil': 'NIL',
+                'or': 'OR',
+                'print': 'PRINT',
+                'return': 'RETURN',
+                'super': 'SUPER',
+                'this': 'THIS',
+                'true': 'TRUE',
+                'var': 'VAR',
+                'while': 'WHILE',
 
-                'EOF',
+                'eof': 'EOF',
         }
 
     def scan_tokens(self):
@@ -141,7 +141,7 @@ class Scanner:
                 match = re.match(reg_exp, self.content[n:])
                 if match:
                     identifier = match.group(0)
-                    token_type = 'KEYWORD' if identifier in self.keywords else 'IDENTIFIER'
+                    token_type = self.keywords.get(identifier, 'IDENTIFIER')
                     tokens.append(LoxToken(token_type, identifier, '', line))
                     n += len(identifier)
                 else:

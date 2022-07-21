@@ -2,11 +2,13 @@ from scanner import Scanner
 import sys
 
 def run_interactive_mode():
+    scanner = Scanner('')
     while True:
         try:
             line = input("> ")
-            # for now just echo the line
-            print(line)
+            scanner.content = line
+            tokens = scanner.scan_tokens()
+            print(tokens)
         except KeyboardInterrupt:
             print(" Goodbye ...")
             sys.exit(0)
