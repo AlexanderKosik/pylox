@@ -1,4 +1,5 @@
 from loxtoken import LoxToken
+import re
 
 class Scanner:
     @staticmethod
@@ -133,6 +134,22 @@ class Scanner:
                 n += 1
                 continue
 
+
+            if self.content[n].isidentifier():
+                start = n
+                reg_exp = r'[a-zA-Z_]+'
+                match = re.match(reg_exp, self.content[n:])
+                if match:
+                    identifier = match.group(0)
+                    token_type = 'KEYWORD' if identifier in self.keywords else 'IDENTIFIER'
+                    tokens.append(LoxToken(token_type, identifier, '', line))
+                    n += len(identifier)
+                else:
+                    print(f'Invalid character in identifier')
+                    n += 1
+                continue
+
+                    
             print(f'Unknown lexeme {self.content[n]}')
             n += 1
 

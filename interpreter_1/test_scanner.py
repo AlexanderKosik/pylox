@@ -68,5 +68,19 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(tokens[0].type, 'NUMBER')
         self.assertEqual(len(tokens), 2)
 
+    def test_identifier(self):
+        file_content = 'my_var'
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        self.assertEqual(tokens[0].type, 'IDENTIFIER')
+        self.assertEqual(len(tokens), 2)
+
+    def test_keyword(self):
+        file_content = 'CLASS'
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        self.assertEqual(tokens[0].type, 'KEYWORD')
+        self.assertEqual(len(tokens), 2)
+
 if __name__ == '__main__':
     unittest.main()
