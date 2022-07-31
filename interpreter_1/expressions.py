@@ -44,7 +44,12 @@ class Unary(Expression):
 
 
 if __name__ == '__main__':
-    un = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(42))
+    first = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(42))
+    second = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(13))
+    mul = Binary(first, LoxToken('MUL', '*', None, 1), second)
+
     from astprinter import AstPrinter
     a = AstPrinter()
-    print(a.print(un))
+    print(a.print(first))
+    print(a.print(second))
+    print(a.print(mul))
