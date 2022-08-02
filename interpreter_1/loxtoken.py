@@ -8,5 +8,5 @@ class LoxToken:
     line: int
 
     def __repr__(self):
-        return self.lexeme
+        return f'{self.type}, {self.lexeme}'
 

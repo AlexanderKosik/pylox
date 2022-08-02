@@ -32,6 +32,7 @@ class Scanner:
         self.two_char_tokens = {
             '<=': 'LESS_EQUAL',
             '==': 'EQUAL_EQUAL',
+            '!=': 'BANG_EQUAL',
             '>=': 'GREATER_EQUAL',
         }
         self.keywords = {
@@ -123,7 +124,7 @@ class Scanner:
                 lexeme = self.content[n:n+2]
                 token_type = self.two_char_tokens[lexeme]
                 tokens.append(LoxToken(token_type, lexeme, '', line))
-                # move forward one more time because of 2 char operator
+                # move forward two times because of 2 char operator
                 n += 2
                 continue
 
