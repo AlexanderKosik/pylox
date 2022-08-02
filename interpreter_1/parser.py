@@ -51,7 +51,7 @@ class Parser:
 
     def literal(self):
         if self.match('NUMBER', 'STRING'):
-            return Literal(self.previous().literal)
+            return Literal(self.previous().lexeme)
         print("did not match:", self.peek())
 
     def parse(self):
