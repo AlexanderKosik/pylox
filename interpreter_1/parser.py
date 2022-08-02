@@ -46,11 +46,51 @@ class Parser:
         return expr
 
     def comparison(self) -> Expression:
-        expr = self.literal()
+        expr = self.term()
+
+        while self.match("LESS_EQUAL", "GREATER_EQUAL", "LESS", "GREATER"):
+            operator = self.previous()
+            right = self.term()
+            expr = Binary(expr, operator, right)
+
         return expr
 
-    def literal(self):
-        if self.match('NUMBER', 'STRING'):
+    def term(self):
+        expr = self.factor()
+
+        while self.match("PLUS", "MINUS"):
+            operator = self.previous()
+            right = self.factor()
+            expr = Binary(expr, operator, right)
+
+        return expr
+
+    def factor(self):
+        expr = self.unary()
+
+        while self.match("SLASH", "STAR"):
+            operator = self.previous()
+            right = self.unary()
+            expr = Binary(expr, operator, right)
+
+        return expr
+
+    def unary(self):
+        if self.match("BANG", "MINUS"):
+            operator = self.previous()
+            right = self.primary()
+            expr = Unary(operator, right)
+
+        return expr
+
+    def primary(self):
+        if self.match('NIL'):
+            return Literal(self.previous().lexeme)
+        if self.match('TRUE'):
+            return Literal(self.previous().lexeme)
+        if self.match('FALSE'):
+            return Literal(self.previous().lexeme)
+        if self.match("NUMBER", "STRING"):
             return Literal(self.previous().lexeme)
         print("did not match:", self.peek())
 
