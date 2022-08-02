@@ -1,6 +1,5 @@
 from expressions import *
 
-
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -92,7 +91,18 @@ class Parser:
             return Literal(self.previous().lexeme)
         if self.match("NUMBER", "STRING"):
             return Literal(self.previous().lexeme)
+
+        if self.match('LEFT_PAREN'):
+            expr = self.expression()
+            self.consume('RIGHT_PAREN', "Expect ')' after expression.")
+            return Grouping(expr)
         print("did not match:", self.peek())
+
+    def consume(self, token_type, error_message: str):
+        if self.check(token_type):
+            return self.advance()
+
+        raise Exception(f"{token_type}:, {error_message})")
 
     def parse(self):
         return self.expression()
