@@ -76,10 +76,10 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(len(tokens), 2)
 
     def test_keyword(self):
-        file_content = 'CLASS'
+        file_content = 'class'
         scanner = Scanner(file_content)
         tokens = scanner.scan_tokens()
-        self.assertEqual(tokens[0].type, 'KEYWORD')
+        self.assertEqual(tokens[0].type, 'CLASS')
         self.assertEqual(len(tokens), 2)
 
 if __name__ == '__main__':
