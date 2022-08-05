@@ -78,9 +78,9 @@ class Parser:
         if self.match("BANG", "MINUS"):
             operator = self.previous()
             right = self.primary()
-            expr = Unary(operator, right)
+            return Unary(operator, right)
 
-        return expr
+        return self.primary()
 
     def primary(self):
         if self.match('NIL'):
