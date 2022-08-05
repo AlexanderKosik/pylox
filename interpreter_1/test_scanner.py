@@ -82,5 +82,14 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(tokens[0].type, 'CLASS')
         self.assertEqual(len(tokens), 2)
 
+    def test_plus(self):
+        file_content = '3+1'
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        self.assertEqual(tokens[0].type, 'NUMBER')
+        self.assertEqual(tokens[1].type, 'PLUS')
+        self.assertEqual(tokens[2].type, 'NUMBER')
+        self.assertEqual(tokens[-1].type, 'EOF')
+
 if __name__ == '__main__':
     unittest.main()
