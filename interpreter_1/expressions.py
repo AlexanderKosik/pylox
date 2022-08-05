@@ -30,7 +30,7 @@ class Literal(Expression):
         self.value = value
 
     def accept(self, visitor):
-        return visitor.visitLiteral(self)
+        return visitor.visitLiteralExpr(self)
 
 
 class Unary(Expression):
@@ -40,7 +40,7 @@ class Unary(Expression):
         self.right = right
 
     def accept(self, visitor):
-        return visitor.visitUnary(self)
+        return visitor.visitUnaryExpr(self)
 
 
 if __name__ == '__main__':

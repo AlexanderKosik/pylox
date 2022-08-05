@@ -39,7 +39,7 @@ class Parser:
 
         while self.match("EQUAL_EQUAL", "BANG_EQUAL"):
             operator = self.previous()
-            right = comparison()
+            right = self.comparison()
             expr = Binary(expr, operator, right)
 
         return expr
@@ -89,7 +89,9 @@ class Parser:
             return Literal(self.previous().lexeme)
         if self.match('FALSE'):
             return Literal(self.previous().lexeme)
-        if self.match("NUMBER", "STRING"):
+        if self.match("NUMBER"):
+            return Literal(int(self.previous().lexeme))
+        if self.match("STRING"):
             return Literal(self.previous().lexeme)
 
         if self.match('LEFT_PAREN'):
