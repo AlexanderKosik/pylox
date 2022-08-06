@@ -5,6 +5,22 @@ from expressions import *
 import sys
 import numbers
 
+try:
+    import atexit
+    import readline
+    histfile = ".interpreter_history"
+    try:
+        readline.read_history_file(histfile)
+        # default history len is -1 (infinite), which may grow unruly
+        readline.set_history_length(1000)
+    except FileNotFoundError:
+        pass
+except ImportError:
+    pass
+
+
+atexit.register(readline.write_history_file, histfile)
+
 class Interpreter:
     def evaluate(self, expr: Expression):
         return expr.accept(self)
