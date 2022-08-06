@@ -9,20 +9,20 @@ class Interpreter:
     def evaluate(self, expr: Expression):
         return expr.accept(self)
 
-    def visitLiteralExpr(self, expr: Expression):
+    def visitLiteralExpr(self, expr: Literal):
         return expr.value
 
-    def visitGroupingExpr(self, expr: Expression):
-        return self.evaluate(expr.accept(self))
+    def visitGroupingExpr(self, expr: Grouping):
+        return self.evaluate(expr.expr)
 
-    def visitUnaryExpr(self, expr: Expression):
+    def visitUnaryExpr(self, expr: Unary):
         right = self.evaluate(expr.right)
         if expr.operator == 'BANG':
             return not right
         if expr.operator == 'MINUS':
             return -right
 
-    def visitBinaryExpr(self, expr: Expression):
+    def visitBinaryExpr(self, expr: Binary):
         left = self.evaluate(expr.left)
         right = self.evaluate(expr.right)
         op = expr.operator
