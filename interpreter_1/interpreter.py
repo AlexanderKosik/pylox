@@ -17,9 +17,9 @@ class Interpreter:
 
     def visitUnaryExpr(self, expr: Unary):
         right = self.evaluate(expr.right)
-        if expr.operator == 'BANG':
+        if expr.operator.type == 'BANG':
             return not right
-        if expr.operator == 'MINUS':
+        if expr.operator.type == 'MINUS':
             return -right
 
     def visitBinaryExpr(self, expr: Binary):
