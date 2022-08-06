@@ -1,4 +1,6 @@
 from expressions import *
+from statement import *
+
 
 class Parser:
     def __init__(self, tokens):
@@ -18,9 +20,11 @@ class Parser:
         return self.tokens[self.idx]
 
     def isAtEnd(self):
-        return self.match("EOF")
+        return self.peek().type == "EOF"
 
     def check(self, token_type) -> bool:
+        if self.isAtEnd():
+            return False
         return self.peek().type == token_type
 
     def previous(self):
@@ -30,6 +34,22 @@ class Parser:
         if not self.isAtEnd():
             self.idx += 1
         return self.previous()
+
+    def statement(self) -> Stmt:
+        if self.match("PRINT"):
+            return self.printStatement()
+
+        return self.expressionStatement()
+
+    def printStatement(self):
+        value = self.expression()
+        self.consume("SEMICOLON", "Expect ';' after value.")
+        return PrintStmt(value)
+
+    def expressionStatement(self):
+        expr = self.expression()
+        self.consume("SEMICOLON", "Expect ';' after expression.")
+        return ExpressionStmt(expr)
 
     def expression(self) -> Expression:
         return self.equality()
@@ -83,20 +103,20 @@ class Parser:
         return self.primary()
 
     def primary(self):
-        if self.match('NIL'):
+        if self.match("NIL"):
             return Literal(self.previous().lexeme)
-        if self.match('TRUE'):
+        if self.match("TRUE"):
             return Literal(self.previous().lexeme)
-        if self.match('FALSE'):
+        if self.match("FALSE"):
             return Literal(self.previous().lexeme)
         if self.match("NUMBER"):
             return Literal(int(self.previous().lexeme))
         if self.match("STRING"):
             return Literal(self.previous().lexeme)
 
-        if self.match('LEFT_PAREN'):
+        if self.match("LEFT_PAREN"):
             expr = self.expression()
-            self.consume('RIGHT_PAREN', "Expect ')' after expression.")
+            self.consume("RIGHT_PAREN", "Expect ')' after expression.")
             return Grouping(expr)
         print("did not match:", self.peek())
 
@@ -107,4 +127,7 @@ class Parser:
         raise Exception(f"{token_type}:, {error_message})")
 
     def parse(self):
-        return self.expression()
+        statements = []
+        while not self.isAtEnd():
+            statements.append(self.statement())
+        return statements

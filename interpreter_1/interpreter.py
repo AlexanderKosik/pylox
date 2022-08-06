@@ -2,6 +2,8 @@ from scanner import Scanner
 from astprinter import AstPrinter
 from parser import Parser
 from expressions import *
+from statement import *
+from typing import List
 import sys
 import numbers
 
@@ -24,6 +26,13 @@ atexit.register(readline.write_history_file, histfile)
 class Interpreter:
     def evaluate(self, expr: Expression):
         return expr.accept(self)
+
+    def visitExpressionStmt(self, stmt: Stmt):
+        self.evaluate(stmt.expr)
+
+    def visitPrintStmt(self, stmt: Stmt):
+        value = self.evaluate(stmt.expr)
+        print(value)
 
     def visitLiteralExpr(self, expr: Literal):
         return expr.value
@@ -69,13 +78,15 @@ class Interpreter:
             case 'GREATER':
                 return int(left) > int(right)
 
-    def interpret(self, expr: Expression):
+    def interpret(self, statements: List[Expression]):
         try:
-            value = self.evaluate(expr)
-            print(str(value))
+            for stmt in statements:
+                self.execute(stmt)
         except Exception as e:
-            raise
-        #prinr(e)
+            print(e)
+
+    def execute(self, stmt: Stmt):
+        stmt.accept(self)
 
 def run_interactive_mode():
     scanner = Scanner('')
@@ -86,8 +97,11 @@ def run_interactive_mode():
             scanner.content = line
             tokens = scanner.scan_tokens()
             parser = Parser(tokens)
-            expr = parser.parse()
-            interpreter.interpret(expr)
+            try:
+                statements = parser.parse()
+                interpreter.interpret(statements)
+            except Exception as e:
+                print(e)
         except KeyboardInterrupt:
             print(" Goodbye ...")
             sys.exit(0)
@@ -98,8 +112,8 @@ if __name__ == '__main__':
         scanner = Scanner.from_file(file)
         tokens = scanner.scan_tokens()
         parser = Parser(tokens)
-        expr = parser.parse()
-        AstPrinter().print(expr)
+        statements = parser.parse()
+        interpreter.interpret(statements)
     else:
         run_interactive_mode()
 
