@@ -35,6 +35,25 @@ class Parser:
             self.idx += 1
         return self.previous()
 
+    def declaration(self) -> Stmt:
+        try:
+            if self.match("VAR"):
+                return self.varDeclaration()
+
+            return self.statement()
+        except Exception as e:
+            raise
+
+    def varDeclaration(self):
+        name = self.consume("IDENTIFIER", "Expect variable name")
+
+        initializer = None
+        if self.match("EQUAL"):
+            initializer = self.expression()
+
+        self.consume("SEMICOLON", 'Expect ";" after variable declaration')
+        return VarStmt(name, initializer)
+
     def statement(self) -> Stmt:
         if self.match("PRINT"):
             return self.printStatement()
@@ -113,11 +132,13 @@ class Parser:
             return Literal(int(self.previous().lexeme))
         if self.match("STRING"):
             return Literal(self.previous().lexeme)
-
         if self.match("LEFT_PAREN"):
             expr = self.expression()
             self.consume("RIGHT_PAREN", "Expect ')' after expression.")
             return Grouping(expr)
+        if self.match("IDENTIFIER"):
+            return Variable(self.previous())
+
         print("did not match:", self.peek())
 
     def consume(self, token_type, error_message: str):
@@ -129,5 +150,5 @@ class Parser:
     def parse(self):
         statements = []
         while not self.isAtEnd():
-            statements.append(self.statement())
+            statements.append(self.declaration())
         return statements

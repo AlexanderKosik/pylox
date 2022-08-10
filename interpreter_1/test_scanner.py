@@ -91,5 +91,15 @@ class ScannerTest(unittest.TestCase):
         self.assertEqual(tokens[2].type, 'NUMBER')
         self.assertEqual(tokens[-1].type, 'EOF')
 
+    def test_var_declaration(self):
+        file_content = 'var a = 42;'
+        scanner = Scanner(file_content)
+        tokens = scanner.scan_tokens()
+        self.assertEqual(tokens[0].type, 'VAR')
+        self.assertEqual(tokens[1].type, 'IDENTIFIER')
+        self.assertEqual(tokens[2].type, 'EQUAL')
+        self.assertEqual(tokens[3].type, 'NUMBER')
+        self.assertEqual(tokens[-1].type, 'EOF')
+
 if __name__ == '__main__':
     unittest.main()

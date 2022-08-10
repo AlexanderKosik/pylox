@@ -1,4 +1,5 @@
 from expressions import Expression
+from loxtoken import LoxToken
 
 class Stmt:
     """
@@ -21,3 +22,11 @@ class PrintStmt(Stmt):
 
     def accept(self, visitor):
         visitor.visitPrintStmt(self)
+
+class VarStmt(Stmt):
+    def __init__(self, name: LoxToken, initializer: Expression):
+        self.name = name.lexeme
+        self.initializer = initializer
+
+    def accept(self, visitor):
+        visitor.visitVarStmt(self)

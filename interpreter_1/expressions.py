@@ -42,6 +42,12 @@ class Unary(Expression):
     def accept(self, visitor):
         return visitor.visitUnaryExpr(self)
 
+class Variable(Expression):
+    def __init__(self, name: LoxToken):
+        self.name = name.lexeme
+
+    def accept(self, visitor):
+        return visitor.visitVariable(self)
 
 if __name__ == '__main__':
     first = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(42))
