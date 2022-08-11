@@ -47,7 +47,7 @@ class Variable(Expression):
         self.name = name.lexeme
 
     def accept(self, visitor):
-        return visitor.visitVariable(self)
+        return visitor.visitVariableExpression(self)
 
 if __name__ == '__main__':
     first = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(42))

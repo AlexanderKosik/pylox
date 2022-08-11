@@ -4,6 +4,7 @@ from parser import Parser
 from expressions import *
 from statement import *
 from typing import List
+from environment import Environment
 import sys
 import numbers
 
@@ -24,6 +25,9 @@ except ImportError:
 atexit.register(readline.write_history_file, histfile)
 
 class Interpreter:
+    def __init__(self):
+        self.environment = Environment()
+
     def evaluate(self, expr: Expression):
         return expr.accept(self)
 
@@ -77,6 +81,17 @@ class Interpreter:
                 return int(left) < int(right)
             case 'GREATER':
                 return int(left) > int(right)
+
+    def visitVarStmt(self, stmt: VarStmt):
+        value = None
+        if stmt.initializer is not None:
+            value = self.evaluate(stmt.initializer)
+
+        self.environment.define(stmt.name, value)
+
+    def visitVariableExpression(self, variable: Variable):
+        return self.environment.get(variable.name)
+
 
     def interpret(self, statements: List[Expression]):
         try:
