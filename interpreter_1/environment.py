@@ -4,11 +4,11 @@ class Environment:
     def __init__(self):
         self.values = {}
 
-    def define(self, name: LoxToken, value):
-        self.values[name.lexeme] = value
+    def define(self, name: str, value):
+        self.values[name] = value
 
-    def get(name: LoxToken):
+    def get(self, name: str):
         try:
-            return self.values[name.lexeme]
+            return self.values[name]
         except KeyError:
-            raise Exception("Undefined variable '{name.lexeme}')
+            raise Exception("Undefined variable '{name}'")
