@@ -1,5 +1,6 @@
 from expressions import Expression
 from loxtoken import LoxToken
+from typing import List
 
 class Stmt:
     """
@@ -30,4 +31,11 @@ class VarStmt(Stmt):
 
     def accept(self, visitor):
         visitor.visitVarStmt(self)
+
+class Block(Stmt):
+    def __init__(self, statements: List[Stmt]):
+        self.statements = statements
+
+    def accept(self, visitor):
+        visitor.visitBlockStmt(self)
 

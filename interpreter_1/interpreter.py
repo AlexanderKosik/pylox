@@ -97,6 +97,17 @@ class Interpreter:
         self.environment.assign(assignment.name, value)
         return value
 
+    def visitBlockStmt(self, statement):
+        self.executeBlock(statement.statements, Environment())
+
+    def executeBlock(self, statements, env):
+        prev = self.environment
+        try:
+            self.environment = env
+            for statement in statements:
+                self.execute(statement)
+        finally:
+            self.environment = prev
 
     def interpret(self, statements: List[Expression]):
         try:
