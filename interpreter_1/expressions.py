@@ -49,6 +49,15 @@ class Variable(Expression):
     def accept(self, visitor):
         return visitor.visitVariableExpression(self)
 
+class Assignment(Expression):
+    def __init__(self, name: LoxToken, value: Expression):
+        self.name = name
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.visitAssignment(self)
+
+
 if __name__ == '__main__':
     first = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(42))
     second = Unary(operator=LoxToken('MINUS', '-', None, 1), right=Literal(13))

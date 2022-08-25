@@ -30,3 +30,4 @@ class VarStmt(Stmt):
 
     def accept(self, visitor):
         visitor.visitVarStmt(self)
+

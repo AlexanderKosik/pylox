@@ -70,8 +70,25 @@ class Parser:
         self.consume("SEMICOLON", "Expect ';' after expression.")
         return ExpressionStmt(expr)
 
+    def assignment(self) -> Expression:
+        expr = self.equality() 
+
+        if self.match("EQUAL"):
+            equals = self.previous()
+            value = self.assignment()
+
+            if isinstance(expr, Variable):
+                name = expr.name
+                return Assignment(name, value)
+
+            raise Exception("Invalid assignment target.")
+        
+        return expr
+
+
     def expression(self) -> Expression:
-        return self.equality()
+        return self.assignment()
+
 
     def equality(self) -> Expression:
         expr = self.comparison()

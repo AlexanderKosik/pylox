@@ -92,6 +92,11 @@ class Interpreter:
     def visitVariableExpression(self, variable: Variable):
         return self.environment.get(variable.name)
 
+    def visitAssignment(self, assignment: Assignment):
+        value = self.evaluate(assignment.value)
+        self.environment.assign(assignment.name, value)
+        return value
+
 
     def interpret(self, statements: List[Expression]):
         try:
