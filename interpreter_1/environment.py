@@ -24,4 +24,8 @@ class Environment:
             self.values[name] = value
             return
 
+        if self.enclosing is not None:
+            self.enclosing.assign(name, value)
+            return
+
         raise Exception(f"Undefined variable '{name}'.")
