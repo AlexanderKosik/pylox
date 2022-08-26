@@ -17,7 +17,7 @@ class Environment:
         if self.enclosing is not None:
             return enclosing.get(name)
         
-        raise Exception("Undefined variable '{name}'")
+        raise Exception(f"Undefined variable '{name}'")
 
     def assign(self, name, value):
         if name in self.values:
