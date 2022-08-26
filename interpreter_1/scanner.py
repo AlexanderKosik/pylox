@@ -16,7 +16,7 @@ class Scanner:
             '(': 'LEFT_PAREN',
             ')': 'RIGHT_PAREN',
             '{': 'LEFT_BRACE',
-            '}': 'LEFT_PAREN',
+            '}': 'RIGHT_BRACE',
             ',': 'COMMA',
             '.': 'DOT',
             '-': 'MINUS',

@@ -144,6 +144,7 @@ if __name__ == '__main__':
         tokens = scanner.scan_tokens()
         parser = Parser(tokens)
         statements = parser.parse()
+        interpreter = Interpreter()
         interpreter.interpret(statements)
     else:
         run_interactive_mode()
