@@ -98,7 +98,7 @@ class Interpreter:
         return value
 
     def visitBlockStmt(self, statement):
-        self.executeBlock(statement.statements, Environment())
+        self.executeBlock(statement.statements, Environment(self.environment))
 
     def executeBlock(self, statements, env):
         prev = self.environment

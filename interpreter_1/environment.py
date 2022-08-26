@@ -15,7 +15,7 @@ class Environment:
 
         # check surrounding scopes recursivly
         if self.enclosing is not None:
-            return enclosing.get(name)
+            return self.enclosing.get(name)
         
         raise Exception(f"Undefined variable '{name}'")
 
