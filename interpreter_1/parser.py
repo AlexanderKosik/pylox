@@ -173,7 +173,7 @@ class Parser:
         if self.check(token_type):
             return self.advance()
 
-        raise Exception(f"{token_type}:, {error_message})")
+        raise Exception(f"{token_type}:, {error_message}")
 
     def parse(self):
         statements = []
