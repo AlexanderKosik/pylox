@@ -55,6 +55,8 @@ class Parser:
         return VarStmt(name, initializer)
 
     def statement(self) -> Stmt:
+        if self.match("LEFT_PAREN"):
+            return self.ifStatement()
         if self.match("PRINT"):
             return self.printStatement()
         if self.match("LEFT_BRACE"):
@@ -70,6 +72,16 @@ class Parser:
 
         self.consume("RIGHT_BRACE", "Expect '}' after block.")
         return statements
+
+    def ifStatement(self):
+        consume("LEFT_PAREN", "Expect '(' after 'if'.")
+        condition = self.expression()
+        consume("RIGHT_PAREN", "Expect ')' after condition.")
+        thenBranch = self.statement()
+        elseBranch = None
+        if self.match("ELSE"):
+            elseBranch = self.statement()
+        return IfStmt(condition, thenBranch, elseBranch)
 
     def printStatement(self):
         value = self.expression()

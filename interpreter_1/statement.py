@@ -39,3 +39,11 @@ class Block(Stmt):
     def accept(self, visitor):
         visitor.visitBlockStmt(self)
 
+class IfStmt(Stmt):
+    def __init__(self, condition, consequence, alternative = None):
+        self.condition = condition
+        self.consequence = consequence
+        self.alternative = alternative
+
+    def accept(self, visitor):
+        visitor.visitIfStmt(self)

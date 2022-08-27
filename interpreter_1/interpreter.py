@@ -100,6 +100,12 @@ class Interpreter:
     def visitBlockStmt(self, statement):
         self.executeBlock(statement.statements, Environment(self.environment))
 
+    def visitIfStmt(self, statement):
+        if self.evaluate(statement.condition):
+            self.execute(statement.consequence)
+        elif statement.alternative:
+            self.execute(statement.alternative)
+
     def executeBlock(self, statements, env):
         prev = self.environment
         try:

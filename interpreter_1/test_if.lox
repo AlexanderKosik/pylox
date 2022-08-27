@@ -1,0 +1,12 @@
+var cond = 100;
+print cond < 200;
+print cond > 200;
+
+// IF (cond < 200)
+// {
+  // print "Cond is smaller 200";
+// }
+// ELSE
+// {
+  // print "Cond is not smaller 200";
+// }
